@@ -1,72 +1,41 @@
-contacts = {}
-
-
-def input_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except ValueError:
-            return "Give me name and phone please."
-        except KeyError:
-            return "Contact not found."
-        except IndexError:
-            return "Invalid command format."
-        except Exception as e:
-            return str(e)
-    return inner
-
-
-def parse_input(user_input):
-    cmd, *args = user_input.split()
-    cmd = cmd.strip().lower()
-    return cmd, *args
-
-
-@input_error
-def add_contact(args):
-    name, phone = args
-    contacts[name] = phone
-    return "Contact added."
-
-
-@input_error
-def change_contact(args):
-    name, new_phone = args
-    if name in contacts:
-        contacts[name] = new_phone
-        return "Contact updated."
-    else:
-        return "Contact not found."
-
-
-@input_error
-def show_phone(args):
-    name = args[0]
-    if name in contacts:
-        return contacts[name]
-    else:
-        return "Contact not found."
+from util import Bot_Util
+from models import AddressBook
 
 
 def main():
+    pass
+    helper = Bot_Util(AddressBook())
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")
-        command, *args = parse_input(user_input)
+        command, *args = helper.parse_input(user_input)
 
-        if command in ["close", "exit"]:
+        if command.strip() in ["close", "exit"]:
+            helper.exit()
             print("Good bye!")
             break
         elif command == "hello":
             print("How can I help you?")
         elif command == "add":
-            print(add_contact(args))
+            print(helper.add_contact_or_phone(args))
+        elif command == "remove":
+            print(helper.remove_contact(args))
         elif command == "change":
-            print(change_contact(args))
+            print(helper.change_phone(args))
         elif command == "phone":
-            print(show_phone(args))
+            print(helper.get_phone(args))
+        elif command == "remove-phone":
+            print(helper.remove_phone(args))
+        elif command == "add-birthday":
+            print(helper.add_birthday(args))
+        elif command == "show-birthday":
+            print(helper.show_birthday(args))
         elif command == "all":
-            print(contacts)
+            print(helper.all())
+        elif command == "birthdays":
+            print(helper.birthdays())
+        elif command == "close":
+            helper.exit()
         else:
             print("Invalid command.")
 

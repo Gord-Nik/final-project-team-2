@@ -1,4 +1,9 @@
-from collections import UserDict
+import datetime
+import re
+import os
+import sys
+from collections import UserDict, defaultdict
+from docutils import DataError
 
 
 class Field:
@@ -21,81 +26,192 @@ class Name(Field):
 
 
 class Phone(Field):
-    def __init__(self, value):
-        if not value.isdigit() or len(value) != 10:
-            raise ValueError("Invalid phone number format")
+    __pattern = r'^\d{10}$'
+
+    def __init__(self, phone):
+        if not re.match(self.__pattern, phone):
+            raise ValueError("Phone should contains 10 digits only")
+        super().__init__(phone)
+
+    def __hash__(self):
+        return hash(self.value)
+
+    def __eq__(self, other):
+        return self.value == other.value
+
+
+class Birthday(Field):
+    __date_format = "%d.%m.%Y"
+
+    def __init__(self, birthday):
+        try:
+            value = datetime.datetime.strptime(birthday, self.__date_format)
+        except ValueError:
+            raise DataError("Incorrect date, should be format 'dd.mm.YYYY'")
         super().__init__(value)
+
+    def __str__(self):
+        return f"{self.value.strftime(self.__date_format)}"
 
 
 class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
+        self.birthday = None
 
     def add_phone(self, phone):
-        self.phones.append(Phone(phone))
+        phn = Phone(phone)
+        self.phones.append(phn)
+        return "Phone was added."
 
     def remove_phone(self, phone):
-        if phone in self.phones:
-            self.phones.remove(phone)
+        phn = Phone(phone)
+        if self.__phone_exists(phn):
+            self.phones.remove(phn)
+            return "Phone was removed."
+        raise KeyError
 
-    def edit_phone(self, old_phone_number, new_phone_number):
-        for phone in self.phones:
-            if phone.value == old_phone_number:
-                phone.value = new_phone_number
-                break
+    def edit_phone(self, phone, new_phone):
+        phn = Phone(phone)
+        if self.__phone_exists(phn):
+            self.phones.remove(phn)
+            self.phones.append(Phone(new_phone))
+            return "Phone was edited."
+        raise KeyError
 
     def find_phone(self, phone):
-        return [p.value for p in self.phones if p.value == phone]
+        phn = Phone(phone)
+        if self.__phone_exists(phn):
+            return phn
+        raise KeyError
+
+    def add_birthday(self, birthday):
+        if self.birthday:
+            raise ValueError
+        self.birthday = Birthday(birthday)
+        return "Birthday was added."
+
+    def show_birthday(self):
+        return self.birthday
+
+    def __phone_exists(self, phone):
+        return phone in self.phones
 
     def __str__(self):
-        return (f"Contact name: {self.name.value}, "
-                f"phones: {'; '.join(str(p) for p in self.phones)}")
+        brth = ""
+        if self.birthday is not None:
+            brth += f", birthday: {self.birthday}."
+
+        return (f"Contact name: {self.name.value},"
+                f" phones: {'; '.join(p.value for p in self.phones)}{brth}")
 
 
 class AddressBook(UserDict):
-    def add_record(self, record):
-        self.data[record.name.value] = record
+    __file_name = "data.bin"
+    __path = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), __file_name))
+
+    def __init__(self):
+        UserDict.__init__(self)
+        if os.path.isfile(self.__path):
+            self.data = self.__read_from_file()
+
+    def add_record(self, data):
+        if data in self.data.values():
+            raise ValueError
+        self.data[data.name] = data
+        return "Contact was added."
 
     def find(self, name):
-        return self.data.get(name)
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm]
+        return None
 
-    def delete(self, name):
-        if name in self.data:
-            del self.data[name]
+    def if_contact_exists(self, name):
+        return self.__has_key(Name(name))
 
+    def add_phone(self, name, phone):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].add_phone(phone)
+        raise KeyError
 
-if __name__ == "__main__":
-    # Створення нової адресної книги
-    book = AddressBook()
+    def edit_phone(self, name, phone, new_phone):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].edit_phone(phone, new_phone)
+        raise KeyError
 
-    # Створення запису для John
-    john_record = Record("John")
-    john_record.add_phone("1234567890")
-    john_record.add_phone("5555555555")
+    def remove_phone(self, name, phone):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].remove_phone(phone)
+        raise KeyError
 
-    # Додавання запису John до адресної книги
-    book.add_record(john_record)
+    def remove(self, name):
+        nm = Name(name)
+        if self.__has_key(nm):
+            self.data.pop(nm)
+            return "Record was removed."
+        raise KeyError
 
-    # Створення та додавання нового запису для Jane
-    jane_record = Record("Jane")
-    jane_record.add_phone("9876543210")
-    book.add_record(jane_record)
+    def add_birthday(self, name, birthday):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].add_birthday(birthday)
+        raise KeyError
 
-    # Виведення всіх записів у книзі
-    for name, record in book.data.items():
-        print(record)
+    def show_birthday(self, name):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].show_birthday()
+        raise KeyError
 
-    # Знаходження та редагування телефону для John
-    john = book.find("John")
-    john.edit_phone("1234567890", "1112223333")
+    def get_birthdays_per_week(self):
+        birthdays_per_week = defaultdict(list)
+        current_year = datetime.datetime.today().year
+        current_date = datetime.datetime.today().date()
 
-    print(john)  # Виведення: Contact name: John,
-    # phones: 1112223333; 5555555555
+        for value in self.data.values():
+            if value.birthday is not None:
+                name = value.name.value
+                birthday = value.birthday.value
+                birthday_this_year = (
+                    birthday.replace(year=current_year)).date()
 
-    # Пошук конкретного телефону у записі John
-    found_phone = john.find_phone("5555555555")
-    print(f"{john.name}: {found_phone}")  # Виведення: 5555555555
+                if birthday_this_year < current_date:
+                    birthday_this_year.replace(year=current_year + 1)
 
-    # Видалення запису Jane
-    book.delete("Jane")
+                delta_days = (birthday_this_year - current_date).days
+                if delta_days < 7 and delta_days > 0:
+                    day = AddressBook.__get_day(value.birthday.value)
+
+                    if day in ("Saturday", "Sunday"):
+                        day = "Monday"
+
+                    birthdays_per_week[day].append(name)
+        txt = ""
+        for k, v in birthdays_per_week.items():
+            txt += f"{k}: {'; '.join(n for n in v)}\n"
+        return txt
+
+    def exit(self):
+        sys.exit()
+
+    def __get_day(date):
+        return date.strftime("%A")
+
+    def __has_key(self, value):
+        return value in self.data.keys()
+
+    def __getstate__(self):
+        return self.data
+
+    def __setstate__(self, value):
+        self.data = value
+
+    def __str__(self):
+        return ("Address Book:\n"
+                + '\n'.join([f'{value}' for value in self.data.values()]))
