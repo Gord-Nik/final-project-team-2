@@ -1,5 +1,6 @@
 from src.util import Bot_Util
 from src.models import AddressBook
+from src.models import Notes
 
 
 def main():
@@ -34,6 +35,8 @@ def main():
             print(helper.all())
         elif command == "birthdays":
             print(helper.birthdays())
+        elif command == "open_notes":
+            print(helper.open_notes(args))
         elif command == "close":
             helper.exit()
         else:
