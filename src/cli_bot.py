@@ -1,5 +1,5 @@
-from util import Bot_Util
-from models import AddressBook
+from src.util import Bot_Util
+from src.models import AddressBook
 
 
 def main():
@@ -38,7 +38,7 @@ def main():
             helper.exit()
         else:
             print("Invalid command.")
-
-
-if __name__ == "__main__":
-    main()
+#
+#
+# if __name__ == "__main__":
+#     main()
