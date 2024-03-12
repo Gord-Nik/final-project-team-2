@@ -4,6 +4,7 @@ import os
 import sys
 from collections import UserDict, defaultdict
 from docutils import DataError
+from util import Bot_Util
 
 
 class Field:
@@ -215,3 +216,35 @@ class AddressBook(UserDict):
     def __str__(self):
         return ("Address Book:\n"
                 + '\n'.join([f'{value}' for value in self.data.values()]))
+
+
+class Notes(UserDict):
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return f'{self.name}'
+
+def open_notes():
+    helper = Bot_Util()
+    my_notes = Notes(UserDict)
+    while True:
+        user_input = input("What is your Notes command? >>> ")
+        command, *args = helper.parse_input(user_input)
+
+        if command == 'make-note':
+            my_notes = my_notes[helper.make_note()]
+            print('Note is successfully added.')
+        elif command == 'open-note':
+            print(helper.open_note(args))
+        elif command == 'edit-note':
+            print(helper.edit_note(args))
+        elif command == 'delete-note':
+            print(helper.delete_note(args))
+        else:
+            print("Choose a command from the list below:")
+            print("{:<15} + {:^20} --> {:<25}".format('make-note', '~', 'create a new note'))
+            print("{:<15} + {:^20} --> {:<25}".format('open-note', '<note name>', 'open a note by name'))
+            print("{:<15} + {:^20} --> {:<25}".format('edit-note', '<note name>', 'edit a note by name'))  
+            print("{:<15} + {:^20} --> {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
+    return my_notes     

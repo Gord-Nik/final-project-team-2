@@ -1,5 +1,5 @@
 from docutils import DataError
-from src.models import AddressBook, Record
+from src.models import AddressBook, Record, Notes
 
 
 def input_error(func):
@@ -85,6 +85,22 @@ class Bot_Util:
 
     def birthdays(self):
         return self.addressBook.get_birthdays_per_week()
-
+    
     def exit(self):
         self.addressBook.exit()
+    
+    def make_note():
+        named_note = input("What's the note's name? >>>")
+        print(f"{named_note} created! You can type now (type 'close' when finished):\n")
+        lines = []
+        while True:
+            line = input()
+            if line in ['close', 'exit', 'finish', 'done', 'save']:
+                break
+            lines.append(line)
+            new_note = {named_note: '\n'.join(lines)}
+        return new_note
+
+    
+
+
