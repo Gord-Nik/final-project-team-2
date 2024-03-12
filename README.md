@@ -1,4 +1,4 @@
-final project team 2
+Final project team 2
 
 for setup bot assistant you need:
 
