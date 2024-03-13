@@ -4,7 +4,7 @@ import os
 import sys
 from collections import UserDict, defaultdict
 from docutils import DataError
-from util import Bot_Util
+
 
 
 class Field:
@@ -224,26 +224,34 @@ class Notes(UserDict):
     def __str__(self):
         return f'{self.name}'
 
-def open_notes():
-    helper = Bot_Util()
-    my_notes = Notes(UserDict)
-    while True:
-        user_input = input("What is your Notes command? >>> ")
-        command, *args = helper.parse_input(user_input)
+class NoteHelper:
+    def __init__(self, notes: Notes):
+        self.notes = notes
 
-        if command == 'make-note':
-            my_notes = my_notes[helper.make_note()]
-            print('Note is successfully added.')
-        elif command == 'open-note':
-            print(helper.open_note(args))
-        elif command == 'edit-note':
-            print(helper.edit_note(args))
-        elif command == 'delete-note':
-            print(helper.delete_note(args))
-        else:
-            print("Choose a command from the list below:")
-            print("{:<15} + {:^20} --> {:<25}".format('make-note', '~', 'create a new note'))
-            print("{:<15} + {:^20} --> {:<25}".format('open-note', '<note name>', 'open a note by name'))
-            print("{:<15} + {:^20} --> {:<25}".format('edit-note', '<note name>', 'edit a note by name'))  
-            print("{:<15} + {:^20} --> {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
-    return my_notes
+    def make_note(self):
+        named_note = input("What's the note's name? >>> ")
+        print(f"<{named_note}> created! You can type now (type 'close' in a new line when finished):\n")
+        lines = []
+        while True:
+            line = input()
+            if line in ['close', 'exit', 'finish', 'done', 'save']:
+                break
+            lines.append(line)
+            named_note = '\n'.join(lines)
+            print(f'({named_note}) - saved!')
+        return named_note
+
+    def open_note(self, name):
+        return self.notes[name]
+
+    def edit_note(self, name):
+        self.notes[name] = input(f"Edit your note (type 'close)' in a new line to finish editing):\n{self.notes[name]}")
+        return self
+    
+    def all_notes(self):
+        for key in self.notes.keys():
+            print(f'-  {key}')
+    
+    def delete_note(self, name):
+        self.notes.pop(name)
+        return self

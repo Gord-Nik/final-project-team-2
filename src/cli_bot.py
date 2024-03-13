@@ -1,10 +1,11 @@
 from src.util import Bot_Util
 from src.models import AddressBook
-from src.models import Notes
+import src.notes_bot
+
 
 
 def main():
-    pass
+    # pass
     helper = Bot_Util(AddressBook())
     print("Welcome to the assistant bot!")
     while True:
@@ -35,13 +36,13 @@ def main():
             print(helper.all())
         elif command == "birthdays":
             print(helper.birthdays())
-        elif command == "open_notes":
-            print(helper.open_notes(args))
+        elif command == "open-notes":
+            print(src.notes_bot.open_notes())
         elif command == "close":
             helper.exit()
         else:
             print("Invalid command.")
-#
-#
-# if __name__ == "__main__":
-#     main()
+
+
+if __name__ == "__main__":
+    main()
