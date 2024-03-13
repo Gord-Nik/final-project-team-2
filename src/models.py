@@ -2,6 +2,7 @@ import datetime
 import re
 import os
 import sys
+import pickle
 from collections import UserDict, defaultdict
 from docutils import DataError
 
@@ -109,14 +110,21 @@ class Record:
 
 class AddressBook(UserDict):
     __file_name = "data.bin"
-    __path = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), __file_name))
+    __path = os.path.join(os.getcwd(), __file_name)
 
     def __init__(self):
         UserDict.__init__(self)
         if os.path.isfile(self.__path):
             self.data = self.__read_from_file()
+    
+    def __save_to_file(self):
+        with open(self.__path, "wb") as file:
+            pickle.dump(self.data, file)
 
+    def __read_from_file(self):
+        with open(self.__path, "rb") as file:
+            return pickle.load(file)
+    
     def add_record(self, data):
         if data in self.data.values():
             raise ValueError
@@ -198,6 +206,7 @@ class AddressBook(UserDict):
         return txt
 
     def exit(self):
+        self.__save_to_file()
         sys.exit()
 
     def __get_day(date):
