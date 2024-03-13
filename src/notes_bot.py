@@ -2,11 +2,6 @@ from src.models import Notes
 from src.models import NoteHelper
 
 
-
-
-
-
-
 def open_notes():
     my_notes = Notes("my_notes")
     helper = NoteHelper(my_notes)
@@ -22,17 +17,17 @@ def open_notes():
             my_notes.update(helper.make_note())
             print('Note is successfully added.')
         elif command == 'open-note':
-            if args in my_notes:
+            if args[0] in my_notes:
                 print(helper.open_note(args))
             else:
                 print(f'No such note ({args}) exists.')
         elif command == 'edit-note':
-            if args in my_notes:
+            if args[0] in my_notes:
                 print(f"The note ({helper.edit_note(args)}) has been edited")
             else:
                 print(f'No such note ({args}) exists.')
         elif command == 'delete-note':
-            if args in my_notes:
+            if args[0] in my_notes:
                 print(helper.delete_note(args))
             else:
                 print(f'No such note ({args}) exists.')

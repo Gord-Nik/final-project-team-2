@@ -253,5 +253,11 @@ class NoteHelper:
             print(f'-  {key}')
     
     def delete_note(self, name):
-        self.notes.pop(name)
-        return self
+        confirmation = input(f'Do you want to delete ({self.notes.name})? y/n')
+        if confirmation == 'y':
+            self.notes.pop(name)
+            return self.notes
+        elif confirmation == 'n':
+            return self.notes
+        else:
+            print('Invalid answer (must be "y" or "n").')
