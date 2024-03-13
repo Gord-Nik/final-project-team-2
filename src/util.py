@@ -1,7 +1,6 @@
 from docutils import DataError
 from src.models import AddressBook, Record
 
-
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -16,9 +15,7 @@ def input_error(func):
             return f"{e}"
         except Exception as e:
             return f"An unexpected error occurred: {e}"
-
     return inner
-
 
 class Bot_Util:
     def __init__(self, addressBook: AddressBook):
@@ -30,27 +27,27 @@ class Bot_Util:
         return cmd, *args
 
     @input_error
-    def add_contact_or_phone(self, args):
-        name, phone = args
+    def add_contact(self, args):
+        name, phone, address, email, birthday = args
         name = ''.join(name)
         phone = ''.join(phone)
+        address = ''.join(address)
+        email = ''.join(email)
+        birthday = ''.join(birthday)
         if self.addressBook.if_contact_exists(name):
-            return self.addressBook.add_phone(name, phone)
-        record = Record(name)
-        record.add_phone(phone)
-        return self.addressBook.add_record(record)
+            return self.addressBook.update_contact(name, phone=phone, address=address, email=email, birthday=birthday)
+        else:
+            return self.addressBook.add_contact(name, phone, address, email, birthday)
 
     @input_error
     def remove_contact(self, args):
-        name = args
-        name = ''.join(name)
-        return self.addressBook.remove(name)
+        name = ''.join(args)
+        return self.addressBook.remove_contact(name)
 
     @input_error
     def get_phone(self, args):
-        name = args
-        name = ''.join(name)
-        return self.addressBook.find(name)
+        name = ''.join(args)
+        return self.addressBook.get_phone(name)
 
     @input_error
     def change_phone(self, args):
@@ -58,7 +55,7 @@ class Bot_Util:
         name = ''.join(name)
         phone = ''.join(phone)
         new_phone = ''.join(new_phone)
-        return self.addressBook.edit_phone(name, phone, new_phone)
+        return self.addressBook.change_phone(name, phone, new_phone)
 
     @input_error
     def remove_phone(self, args):
@@ -76,12 +73,11 @@ class Bot_Util:
 
     @input_error
     def show_birthday(self, args):
-        name = args
-        name = ''.join(name)
+        name = ''.join(args)
         return self.addressBook.show_birthday(name)
 
     def all(self):
-        return self.addressBook
+        return self.addressBook.show_all_contacts()
 
     def birthdays(self):
         return self.addressBook.get_birthdays_per_week()
