@@ -33,12 +33,8 @@ def main():
         elif command == "all":
             print(helper.all())
         elif command == "birthdays":
-            print(helper.birthdays())
+            print(helper.birthdays(args))
         elif command == "close":
             helper.exit()
         else:
             print("Invalid command.")
-#
-#
-# if __name__ == "__main__":
-#     main()
