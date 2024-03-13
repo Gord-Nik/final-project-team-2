@@ -177,8 +177,8 @@ class AddressBook(UserDict):
             return self.data[nm].show_birthday()
         raise KeyError
 
-    def get_birthdays_per_week(self):
-        birthdays_per_week = defaultdict(list)
+    def get_birthdays_by_count_of_days(self, count_of_days):
+        birthdays = defaultdict(list)
         current_year = datetime.datetime.today().year
         current_date = datetime.datetime.today().date()
 
@@ -193,15 +193,15 @@ class AddressBook(UserDict):
                     birthday_this_year.replace(year=current_year + 1)
 
                 delta_days = (birthday_this_year - current_date).days
-                if delta_days < 7 and delta_days > 0:
+                if delta_days < count_of_days and delta_days > 0:
                     day = AddressBook.__get_day(value.birthday.value)
 
                     if day in ("Saturday", "Sunday"):
                         day = "Monday"
 
-                    birthdays_per_week[day].append(name)
+                    birthdays[day].append(name)
         txt = ""
-        for k, v in birthdays_per_week.items():
+        for k, v in birthdays.items():
             txt += f"{k}: {'; '.join(n for n in v)}\n"
         return txt
 
