@@ -6,7 +6,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            return "Give me name and phone please."
+            return "Give me name,phone, address and e-mail  please."
         except KeyError:
             return "Enter correct arguments please."
         except IndexError:
@@ -26,6 +26,7 @@ class Bot_Util:
         cmd = cmd.strip().lower()
         return cmd, *args
 
+    
     @input_error
     def add_contact(self, args):
         name, phone, address, email, birthday = args
@@ -34,10 +35,12 @@ class Bot_Util:
         address = ''.join(address)
         email = ''.join(email)
         birthday = ''.join(birthday)
-        if self.addressBook.if_contact_exists(name):
-            return self.addressBook.update_contact(name, phone=phone, address=address, email=email, birthday=birthday)
-        else:
-            return self.addressBook.add_contact(name, phone, address, email, birthday)
+        record = Record(name)
+        record.add_phone(phone)
+        record.add_birthday(birthday)
+        # Додайте методи для email та address, якщо потрібно
+        return self.addressBook.add_record(record)
+
 
     @input_error
     def remove_contact(self, args):
@@ -63,6 +66,50 @@ class Bot_Util:
         name = ''.join(name)
         phone = ''.join(phone)
         return self.addressBook.remove_phone(name, phone)
+    
+    @input_error
+    def add_email(self, args):
+        name, email = args
+        name = ''.join(name)
+        email = ''.join(email)
+        return self.addressBook.add_email(name, email)
+
+    @input_error
+    def edit_email(self, args):
+        name, old_email, new_email = args
+        name = ''.join(name)
+        old_email = ''.join(old_email)
+        new_email = ''.join(new_email)
+        return self.addressBook.edit_email(name, old_email, new_email)
+
+    @input_error
+    def remove_email(self, args):
+        name, email = args
+        name = ''.join(name)
+        email = ''.join(email)
+        return self.addressBook.remove_email(name, email)
+
+    @input_error
+    def add_address(self, args):
+        name, address = args
+        name = ''.join(name)
+        address = ''.join(address)
+        return self.addressBook.add_address(name, address)
+
+    @input_error
+    def edit_address(self, args):
+        name, old_address, new_address = args
+        name = ''.join(name)
+        old_address = ''.join(old_address)
+        new_address = ''.join(new_address)
+        return self.addressBook.edit_address(name, old_address, new_address)
+
+    @input_error
+    def remove_address(self, args):
+        name, address = args
+        name = ''.join(name)
+        address = ''.join(address)
+        return self.addressBook.remove_address(name, address)
 
     @input_error
     def add_birthday(self, args):

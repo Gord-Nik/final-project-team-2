@@ -17,7 +17,7 @@ def main():
         elif command == "hello":
             print("How can I help you?")
         elif command == "add":
-            print(helper.add_contact_or_phone(args))
+            print(helper.add_contact(args))
         elif command == "remove":
             print(helper.remove_contact(args))
         elif command == "change":
@@ -30,6 +30,18 @@ def main():
             print(helper.add_birthday(args))
         elif command == "show-birthday":
             print(helper.show_birthday(args))
+        elif command == "add-email":
+            print(helper.add_email(args))
+        elif command == "edit-email":
+            print(helper.edit_email(args))
+        elif command == "remove-email":
+            print(helper.remove_email(args))
+        elif command == "add-address":
+            print(helper.add_address(args))
+        elif command == "edit-address":
+            print(helper.edit_address(args))
+        elif command == "remove-address":
+            print(helper.remove_address(args))
         elif command == "all":
             print(helper.all())
         elif command == "birthdays":
