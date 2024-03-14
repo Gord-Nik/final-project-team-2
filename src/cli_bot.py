@@ -37,7 +37,7 @@ def main():
         elif command == "birthdays":
             print(helper.birthdays())
         elif command == "open-notes":
-            print(src.notes_bot.open_notes())
+            src.notes_bot.open_notes()
         elif command == "close":
             helper.exit()
         else:

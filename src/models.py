@@ -219,10 +219,20 @@ class AddressBook(UserDict):
 
 class Notes(UserDict):
     def __init__(self, name):
+        super().__init__()
         self.name = name
 
     def __str__(self):
         return f'{self.name}'
+    
+    def update(self, other):
+        if isinstance(other, dict):
+            for key, value in other.items():
+                self[key] = value
+        else:
+            for key, value in other:
+                self[key] = value
+        return self
 
 class NoteHelper:
     def __init__(self, notes: Notes):
@@ -230,34 +240,40 @@ class NoteHelper:
 
     def make_note(self):
         named_note = input("What's the note's name? >>> ")
-        print(f"<{named_note}> created! You can type now (type 'close' in a new line when finished):\n")
+        print(f"\n<{named_note}> created!\nYou can type now.\n(When finished, type 'close' in a new line):\n")
         lines = []
         while True:
             line = input()
             if line in ['close', 'exit', 'finish', 'done', 'save']:
                 break
             lines.append(line)
-            named_note = '\n'.join(lines)
-            print(f'({named_note}) - saved!')
-        return named_note
-
-    def open_note(self, name):
-        return self.notes[name]
+        print(f'\n({named_note}) - saved!\n')
+        return {f'{named_note}':lines}
 
     def edit_note(self, name):
-        self.notes[name] = input(f"Edit your note (type 'close)' in a new line to finish editing):\n{self.notes[name]}")
-        return self
+        print(f"<Editing <{name}>...\nYou can type now.\n(When finished, type 'close' in a new line):\n")
+        lines = []
+        while True:
+            line = input()
+            if line in ['close', 'exit', 'finish', 'done', 'save']:
+                break
+            lines.append(line)
+        print(f'\n({name}) - saved!\n')
+        return lines
     
     def all_notes(self):
         for key in self.notes.keys():
             print(f'-  {key}')
     
     def delete_note(self, name):
-        confirmation = input(f'Do you want to delete ({self.notes.name})? y/n')
+        confirmation = input('Do you want to delete? y/n ')
         if confirmation == 'y':
             self.notes.pop(name)
-            return self.notes
+            print('Deleting...\nDone!')
+
         elif confirmation == 'n':
-            return self.notes
+            print('Abort the mission!')
+
         else:
             print('Invalid answer (must be "y" or "n").')
+        return ''
