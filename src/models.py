@@ -239,14 +239,17 @@ class NoteHelper:
         self.notes = notes
 
     def make_note(self):
-        named_note = input("What's the note's name? >>> ")
-        print(f"\n<{named_note}> created!\nYou can type now.\n(When finished, type 'close' in a new line):\n")
-        lines = []
-        while True:
-            line = input()
-            if line in ['close', 'exit', 'finish', 'done', 'save']:
-                break
-            lines.append(line)
+        named_note = input("What's the note's name? >>> ").rstrip()
+        if named_note == '':
+            return 'Name your note.'
+        else:
+            print(f"\n<{named_note}> created!\nYou can type now.\n(When finished, type 'close' in a new line):\n")
+            lines = []
+            while True:
+                line = input()
+                if line in ['close', 'exit', 'finish', 'done', 'save']:
+                     break
+                lines.append(line)
         print(f'\n({named_note}) - saved!\n')
         return {f'{named_note}':lines}
 

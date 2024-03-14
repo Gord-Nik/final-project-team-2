@@ -11,6 +11,7 @@ def open_notes():
         try:
             user_input = input("What is your Notes command? >>> ")
             command, *args = user_input.split()
+            args = " ".join(args)
             command = command.strip().lower()
             
             if command in ['close', 'exit', 'finish', 'done']:
@@ -21,7 +22,7 @@ def open_notes():
                 my_notes.update(new_note)
             elif command == 'open-note':
                 try:
-                    note_name = args[0]
+                    note_name = args
                     if note_name in my_notes:
                         print(f'Opening note: {note_name}\n')
                         print(f'_________________{note_name}_________________\n')
@@ -34,7 +35,7 @@ def open_notes():
                     print('You need to type the name of the note.')
             elif command == 'edit-note':
                 try:
-                    note_name = args[0]
+                    note_name = args
                     if note_name in my_notes:
                         print(f'Opening note to edit: {note_name}\n')
                         print(f'_________________{note_name}_________________\n')
@@ -49,7 +50,7 @@ def open_notes():
                     print(f'No such note ({new_note}) exists.')
             elif command == 'delete-note':
                 try:
-                    note_name = args[0]
+                    note_name = args
                     if note_name in my_notes:
                         print(helper.delete_note(note_name))
                 except:
