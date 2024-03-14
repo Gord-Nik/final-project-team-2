@@ -11,13 +11,25 @@ def main():
         command, *args = helper.parse_input(user_input)
 
         if command.strip() in ["close", "exit"]:
-            helper.exit()
             print("Good bye!")
+            helper.exit()
             break
         elif command == "hello":
             print("How can I help you?")
         elif command == "add":
             print(helper.add_contact_or_phone(args))
+        elif command == "add-address":
+            print(helper.add_address(args))
+        elif command == "show-address":
+            print(helper.show_address(args))
+        elif command == "change-address":
+            print(helper.change_address(args))
+        elif command == "add-email":
+            print(helper.add_email(args))
+        elif command == "show-email":
+            print(helper.show_email(args))
+        elif command == "change-email":
+            print(helper.change_email(args))
         elif command == "remove":
             print(helper.remove_contact(args))
         elif command == "change":
@@ -35,6 +47,7 @@ def main():
         elif command == "birthdays":
             print(helper.birthdays(args))
         elif command == "close":
+            print("Good bye!")
             helper.exit()
         else:
             print("Invalid command.")
