@@ -6,14 +6,12 @@ import pickle
 from collections import UserDict, defaultdict
 from docutils import DataError
 
-
 class Field:
     def __init__(self, value):
         self.value = value
 
     def __str__(self):
         return str(self.value)
-
 
 class Name(Field):
     def __init__(self, name):
@@ -24,7 +22,6 @@ class Name(Field):
 
     def __eq__(self, other):
         return self.value == other.value
-
 
 class Phone(Field):
     __pattern = r'^\d{10}$'
@@ -40,10 +37,20 @@ class Phone(Field):
     def __eq__(self, other):
         return self.value == other.value
 
+class Email(Field):
+    __pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+
+    def __init__(self, email):
+        if not re.match(self.__pattern, email):
+            raise ValueError("Invalid email format")
+        super().__init__(email)
+
+class Address(Field):
+    def __init__(self, address):
+        super().__init__(address)
 
 class Birthday(Field):
     __date_format = "%d.%m.%Y"
-
     def __init__(self, birthday):
         try:
             value = datetime.datetime.strptime(birthday, self.__date_format)
@@ -54,25 +61,19 @@ class Birthday(Field):
     def __str__(self):
         return f"{self.value.strftime(self.__date_format)}"
 
-
 class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
+        self.email = None
+        self.address = None
         self.birthday = None
 
     def add_phone(self, phone):
         phn = Phone(phone)
         self.phones.append(phn)
         return "Phone was added."
-
-    def remove_phone(self, phone):
-        phn = Phone(phone)
-        if self.__phone_exists(phn):
-            self.phones.remove(phn)
-            return "Phone was removed."
-        raise KeyError
-
+    
     def edit_phone(self, phone, new_phone):
         phn = Phone(phone)
         if self.__phone_exists(phn):
@@ -87,26 +88,70 @@ class Record:
             return phn
         raise KeyError
 
+    def remove_phone(self, phone):
+        phn = Phone(phone)
+        if self.__phone_exists(phn):
+            self.phones.remove(phn)
+            return "Phone was removed."
+        raise KeyError
+
+    def add_email(self, email):
+        if self.email:
+            raise ValueError
+        self.email = Email(email)
+        return "E-mail was added."
+
+    def edit_email(self, email):
+        self.email = Email(email)
+        return "Email was edited."
+
+    def show_email(self):
+        return self.email
+
+    def add_address(self, address):
+        if self.address:
+            raise ValueError
+        self.address = Address(address)
+        return "Address was added."
+
+    def edit_address(self, address):
+        self.address = Address(address)
+        return "Address was edited."
+    
+    def show_address(self):
+        return self.address
+    
     def add_birthday(self, birthday):
         if self.birthday:
             raise ValueError
         self.birthday = Birthday(birthday)
         return "Birthday was added."
 
+    def edit_birthday(self, birthday):
+        self.birthday = Birthday(birthday)
+        return "Birthday was edited."
+
     def show_birthday(self):
         return self.birthday
-
+    
     def __phone_exists(self, phone):
         return phone in self.phones
-
+    
     def __str__(self):
         brth = ""
         if self.birthday is not None:
-            brth += f", birthday: {self.birthday}."
+            brth += f" birthday: {self.birthday},"
+        
+        mail = ""
+        if self.email is not None:
+            mail += f" e-mail: {self.email},"
+        
+        addr = ""
+        if self.address is not None:
+            addr += f" address: {self.address}."
 
         return (f"Contact name: {self.name.value},"
-                f" phones: {'; '.join(p.value for p in self.phones)}{brth}")
-
+                f" phones: {'; '.join(p.value for p in self.phones)},{brth}{mail}{addr}")
 
 class AddressBook(UserDict):
     __file_name = "data.bin"
@@ -164,11 +209,53 @@ class AddressBook(UserDict):
             self.data.pop(nm)
             return "Record was removed."
         raise KeyError
+    
+    def add_email(self, name, email):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].add_email(email)
+        raise KeyError
+    
+    def edit_email(self, name, email):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].edit_email(email)
+        raise KeyError
+    
+    def show_email(self, name):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].show_email()
+        raise KeyError
+
+    def add_address(self, name, address):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].add_address(address)
+        raise KeyError
+    
+    def edit_address(self, name, address):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].edit_address(address)
+        raise KeyError
+    
+    def show_address(self, name):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].show_address()
+        raise KeyError
 
     def add_birthday(self, name, birthday):
         nm = Name(name)
         if self.__has_key(nm):
             return self.data[nm].add_birthday(birthday)
+        raise KeyError
+    
+    def edit_birthday(self, name, birthday):
+        nm = Name(name)
+        if self.__has_key(nm):
+            return self.data[nm].edit_birthday(birthday)
         raise KeyError
 
     def show_birthday(self, name):
@@ -224,3 +311,4 @@ class AddressBook(UserDict):
     def __str__(self):
         return ("Address Book:\n"
                 + '\n'.join([f'{value}' for value in self.data.values()]))
+    
