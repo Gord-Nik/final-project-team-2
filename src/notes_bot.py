@@ -1,15 +1,24 @@
-# from prompt_toolkit import PromptSession
-# from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import WordCompleter
 from src.models import Notes
 from src.models import NoteHelper
+
+
+
+
 
 
 def open_notes():
     my_notes = Notes("my_notes")
     helper = NoteHelper(my_notes)
+    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note', 'all-notes', 'close', 'exit', 'finish', 'done']
+
+    session = PromptSession()
     while True:
+        combined_list = command_list + list(my_notes.keys())
+        completer = WordCompleter(combined_list)
         try:
-            user_input = input("What is your Notes command? >>> ")
+            user_input = session.prompt("What is your Notes command? >>> ", completer=completer)
             command, *args = user_input.split()
             args = " ".join(args)
             command = command.strip().lower()
