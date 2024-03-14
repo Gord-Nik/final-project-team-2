@@ -12,7 +12,6 @@ def open_notes():
     my_notes = Notes("my_notes")
     helper = NoteHelper(my_notes)
     command_list = ['make-note', 'open-note', 'edit-note', 'delete-note', 'all-notes', 'close', 'exit', 'finish', 'done']
-
     session = PromptSession()
     while True:
         combined_list = command_list + list(my_notes.keys())

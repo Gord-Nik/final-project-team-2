@@ -1,3 +1,5 @@
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import WordCompleter
 from src.util import Bot_Util
 from src.models import AddressBook
 import src.notes_bot
@@ -5,11 +7,13 @@ import src.notes_bot
 
 
 def main():
-    # pass
+    command_list = ['hello', 'add', 'remove', 'change', 'phone', 'remove-phone', "add-birthday", "show-birthday", "all", "birthdays", "open-notes", 'close', 'exit']
+    session = PromptSession()
+    completer = WordCompleter(command_list)
     helper = Bot_Util(AddressBook())
     print("Welcome to the assistant bot!")
     while True:
-        user_input = input("Enter a command: ")
+        user_input = session.prompt("Enter a command: ", completer=completer)
         command, *args = helper.parse_input(user_input)
 
         if command.strip() in ["close", "exit"]:
