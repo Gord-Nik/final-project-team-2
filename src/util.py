@@ -84,8 +84,9 @@ class Bot_Util:
     def all(self):
         return self.addressBook
 
-    def birthdays(self):
-        return self.addressBook.get_birthdays_per_week()
+    def birthdays(self, args):
+        count_of_days = int(args[0])
+        return self.addressBook.get_birthdays_by_count_of_days(count_of_days)
 
     def exit(self):
         self.addressBook.exit()

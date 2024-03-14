@@ -39,7 +39,7 @@ def main():
         elif command == "all":
             print(helper.all())
         elif command == "birthdays":
-            print(helper.birthdays())
+            print(helper.birthdays(args))
         elif command == "open-notes":
             src.notes_bot.open_notes()
         elif command == "close":
@@ -47,6 +47,3 @@ def main():
         else:
             print("Invalid command.")
 
-
-if __name__ == "__main__":
-    main()
