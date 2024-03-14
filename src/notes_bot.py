@@ -4,12 +4,12 @@ from src.models import Notes
 from src.models import NoteHelper
 
 
-
+my_notes = Notes("my_notes")
 
 
 
 def open_notes():
-    my_notes = Notes("my_notes")
+
     helper = NoteHelper(my_notes)
     command_list = ['make-note', 'open-note', 'edit-note', 'delete-note', 'all-notes', 'close', 'exit', 'finish', 'done']
     session = PromptSession()
