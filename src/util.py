@@ -1,7 +1,6 @@
 from docutils import DataError
 from src.models import AddressBook, Record
 
-
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -87,7 +86,6 @@ class Bot_Util:
         name = ''.join(name)
         return self.addressBook.show_email(name)
     
-    # CUD address
     @input_error
     def add_address(self, args):
         name, address = args
@@ -108,7 +106,6 @@ class Bot_Util:
         name = ''.join(name)
         return self.addressBook.show_address(name)
     
-    # CUD birthday
     @input_error
     def add_birthday(self, args):
         name, birthday = args

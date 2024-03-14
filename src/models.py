@@ -51,7 +51,6 @@ class Address(Field):
 
 class Birthday(Field):
     __date_format = "%d.%m.%Y"
-
     def __init__(self, birthday):
         try:
             value = datetime.datetime.strptime(birthday, self.__date_format)
@@ -141,18 +140,18 @@ class Record:
     def __str__(self):
         brth = ""
         if self.birthday is not None:
-            brth += f", birthday: {self.birthday},"
+            brth += f" birthday: {self.birthday},"
         
         mail = ""
         if self.email is not None:
-            mail += f", e-mail: {self.email},"
+            mail += f" e-mail: {self.email},"
         
         addr = ""
         if self.address is not None:
-            addr += f", address: {self.address}."
+            addr += f" address: {self.address}."
 
         return (f"Contact name: {self.name.value},"
-                f" phones: {'; '.join(p.value for p in self.phones)}{brth}{mail}{addr}")
+                f" phones: {'; '.join(p.value for p in self.phones)},{brth}{mail}{addr}")
 
 class AddressBook(UserDict):
     __file_name = "data.bin"
@@ -312,3 +311,4 @@ class AddressBook(UserDict):
     def __str__(self):
         return ("Address Book:\n"
                 + '\n'.join([f'{value}' for value in self.data.values()]))
+    
