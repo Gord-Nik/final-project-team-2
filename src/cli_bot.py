@@ -7,24 +7,7 @@ import src.notes_bot
 
 
 def main():
-    command_list = ['hello',
-                    "add-address",
-                    "show-address",
-                    "change-address",
-                    "add-email",
-                    "add-email",
-                    "change-email",
-                    'add',
-                    'remove',
-                    'change',
-                    'phone',
-                    'remove-phone',
-                    "add-birthday",
-                    "show-birthday",
-                    "all",
-                    "birthdays",
-                    "open-notes",
-                    'close',]
+    command_list = ['hello', 'add', 'remove', 'change', 'phone', 'remove-phone', "add-birthday", "show-birthday", "all", "birthdays", "open-notes", 'close', 'exit']
     session = PromptSession()
     helper = Bot_Util(AddressBook())
     print("Welcome to the assistant bot!")
