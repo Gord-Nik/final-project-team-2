@@ -409,3 +409,14 @@ class NoteHelper:
             self.notes[name].tags.append(tag)
         else:
             print(f"Note with name {name} does not exist")
+
+    def find_notates_by_tag(self, tag):
+        notes = self.notes
+
+        output = []
+
+        for note in notes:
+            if tag in notes[note].tags:
+                output.append(note)
+
+        return output
