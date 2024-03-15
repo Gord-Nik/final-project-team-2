@@ -7,7 +7,6 @@ from src.models import NoteHelper
 my_notes = Notes("my_notes")
 
 
-
 def open_notes():
 
     helper = NoteHelper(my_notes)

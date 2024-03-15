@@ -318,9 +318,10 @@ class Notes(UserDict):
     def __init__(self, name):
         super().__init__()
         self.name = name
+        self.tags = None
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name} tags: {self.tags}'
     
     def update(self, other):
         if isinstance(other, dict):
@@ -330,6 +331,11 @@ class Notes(UserDict):
             for key, value in other:
                 self[key] = value
         return self
+
+    def add_tag(self, tag):
+        self.tags.update(tag)
+
+
 
 class NoteHelper:
     def __init__(self, notes: Notes):
