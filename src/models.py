@@ -331,8 +331,6 @@ class Note:
 class Notes(UserDict):
     __file_name = "notes.bin"
     __path = os.path.join(os.getcwd(), __file_name)
-    __file_name = "notes.bin"
-    __path = os.path.join(os.getcwd(), __file_name)
     def __init__(self, name):
         super().__init__()
         self.name = name
@@ -353,33 +351,8 @@ class Notes(UserDict):
         with open(self.__path, "rb") as file:
             return pickle.load(file)
 
-        if os.path.isfile(self.__path) and os.path.getsize(self.__path) > 0:
-            self.data = self.__read_from_file()
-        else:
-            self.data = {}
-
-    def __save_to_file(self):
-        with open(self.__path, "wb") as file:
-            pickle.dump(self.data, file)
-
-    def exit(self):
-        self.__save_to_file()
-
-    def __read_from_file(self):
-        with open(self.__path, "rb") as file:
-            return pickle.load(file)
-
     def __str__(self):
         return f'{self.name}'
-    
-    def update(self, other):
-        if isinstance(other, dict):
-            for key, value in other.items():
-                self[key] = value
-        else:
-            for key, value in other:
-                self[key] = value
-        return self
 
 
 class NoteHelper:
