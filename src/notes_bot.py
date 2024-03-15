@@ -15,16 +15,8 @@ def check_args_length(args):
 def open_notes():
 
     helper = NoteHelper(my_notes)
-    command_list = ['make-note',
-                    'open-note',
-                    'edit-note',
-                    'delete-note',
-                    'all-notes',
-                    'close',
-                    'exit',
-                    'finish',
-                    'done',
-                    'add-tag']
+    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note'
+        , 'all-notes', 'close', 'exit', 'finish', 'done', 'add-tag', 'find-notates-by-tag']
     session = PromptSession()
     while True:
         combined_list = command_list + list(my_notes.keys())
