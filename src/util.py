@@ -1,6 +1,8 @@
 from docutils import DataError
 from src.models import AddressBook, Record
 
+
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -135,3 +137,5 @@ class Bot_Util:
 
     def exit(self):
         self.addressBook.exit()
+
+
