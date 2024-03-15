@@ -32,6 +32,7 @@ def open_notes():
             if command in ['close', 'exit', 'finish', 'done']:
                 print('Exiting Notes...\nAssistant listening...')
                 my_notes.exit()
+                my_notes.exit()
                 break
 
             elif command == 'make-note':
