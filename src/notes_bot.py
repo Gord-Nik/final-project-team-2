@@ -11,7 +11,15 @@ my_notes = Notes("my_notes")
 def open_notes():
 
     helper = NoteHelper(my_notes)
-    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note', 'all-notes', 'close', 'exit', 'finish', 'done']
+    command_list = ['make-note',
+                    'open-note',
+                    'edit-note',
+                    'delete-note',
+                    'all-notes',
+                    'close',
+                    'exit',
+                    'finish',
+                    'done']
     session = PromptSession()
     while True:
         combined_list = command_list + list(my_notes.keys())
@@ -24,6 +32,7 @@ def open_notes():
             
             if command in ['close', 'exit', 'finish', 'done']:
                 print('Exiting Notes...\nAssistant listening...')
+                my_notes.exit()
                 break
             elif command == 'make-note':
                 new_note = helper.make_note()
