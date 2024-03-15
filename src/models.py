@@ -314,6 +314,20 @@ class AddressBook(UserDict):
                 + '\n'.join([f'{value}' for value in self.data.values()]))
 
 
+class Note:
+    def __init__(self, name, text):
+        self.name = Name(name)
+        self.text = text
+        self.tags = []
+
+    def addTag(self, tag):
+        if tag in self.tags:
+            print(f"Tag {tag} already exist")
+        else:
+            self.tags.append(tag)
+
+
+
 class Notes(UserDict):
     def __init__(self, name):
         super().__init__()
@@ -330,6 +344,7 @@ class Notes(UserDict):
             for key, value in other:
                 self[key] = value
         return self
+
 
 class NoteHelper:
     def __init__(self, notes: Notes):
@@ -348,7 +363,9 @@ class NoteHelper:
                      break
                 lines.append(line)
         print(f'\n({named_note}) - saved!\n')
-        return {f'{named_note}':lines}
+
+        note = Note(named_note, lines)
+        return {f'{named_note}': note}
 
     def edit_note(self, name):
         print(f"<Editing <{name}>...\nYou can type now.\n(When finished, type 'close' in a new line):\n")
@@ -377,3 +394,9 @@ class NoteHelper:
         else:
             print('Invalid answer (must be "y" or "n").')
         return ''
+
+    def add_tag_to_note(self, name, tag):
+        if name in self.notes:
+            self.notes[name].tags.append(tag)
+        else:
+            print(f"Note with name {name} does not exist")
