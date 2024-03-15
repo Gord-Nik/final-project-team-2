@@ -119,12 +119,12 @@ def open_notes():
 
             else:
                 print("\n\nChoose a command from the list below:\n")
-                print("{:<15} + {:^25} -- {:<25}".format('make-note', '~', 'create a new note'))
-                print("{:<15} + {:^25} -- {:<25}".format('open-note', '<note name>', 'open a note by name'))
-                print("{:<15} + {:^25} -- {:<25}".format('edit-note', '<note name>', 'edit a note by name'))
-                print("{:<15} + {:^25} -- {:<25}".format('all-notes', '~', 'check all the notes by name'))
-                print("{:<15} + {:^25} -- {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
-                print("{:<15} + {:^25} -- {:<25}".format('add-tag', '<note name>, <note tag>', 'add tag to the note\n\n'))
+                print("{:<15} + {:^20} -- {:<25}".format('make-note', '~', 'create a new note'))
+                print("{:<15} + {:^20} -- {:<25}".format('open-note', '<note name>', 'open a note by name'))
+                print("{:<15} + {:^20} -- {:<25}".format('edit-note', '<note name>', 'edit a note by name'))
+                print("{:<15} + {:^20} -- {:<25}".format('all-notes', '~', 'check all the notes by name'))
+                print("{:<15} + {:^20} -- {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
+                print("{:<15} + {:^20} -- {:<25}".format('add-tag', '<note name>, <note tag>', 'add tag to the node\n\n'))
         except ValueError:
             print('You need to type something.')
     return my_notes
