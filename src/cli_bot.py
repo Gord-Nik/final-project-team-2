@@ -9,12 +9,10 @@ import src.notes_bot
 def main():
     command_list = ['hello', 'add', 'remove', 'change', 'phone', 'remove-phone', "add-birthday", "show-birthday", "all", "birthdays", "open-notes", 'close', 'exit']
     session = PromptSession()
+    completer = WordCompleter(command_list)
     helper = Bot_Util(AddressBook())
     print("Welcome to the assistant bot!")
     while True:
-        # combined_list = command_list
-        # combined_list += list(my_notes.keys())
-        completer = WordCompleter(command_list)
         user_input = session.prompt("Enter a command: ", completer=completer)
         command, *args = helper.parse_input(user_input)
 
