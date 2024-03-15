@@ -7,10 +7,16 @@ from src.models import NoteHelper
 my_notes = Notes("my_notes")
 
 
+def check_args_length(args):
+    if len(args) < 1:
+        raise ValueError
+
+
 def open_notes():
 
     helper = NoteHelper(my_notes)
-    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note', 'all-notes', 'close', 'exit', 'finish', 'done', 'add-tag']
+    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note'
+        , 'all-notes', 'close', 'exit', 'finish', 'done', 'add-tag', 'find-notates-by-tag']
     session = PromptSession()
     while True:
         combined_list = command_list + list(my_notes.keys())
@@ -29,6 +35,8 @@ def open_notes():
                 my_notes.update(new_note)
 
             elif command == 'open-note':
+                check_args_length(args)
+
                 try:
                     note_name = args[0]
                     if note_name in my_notes:
@@ -48,6 +56,8 @@ def open_notes():
                     print('You need to type the name of the note.')
 
             elif command == 'edit-note':
+                check_args_length(args)
+
                 try:
                     note_name = args[0]
                     if note_name in my_notes:
@@ -64,6 +74,8 @@ def open_notes():
                     print(f'No such note ({new_note}) exists.')
 
             elif command == 'delete-note':
+                check_args_length(args)
+
                 try:
                     note_name = args[0]
                     if note_name in my_notes:
@@ -83,6 +95,17 @@ def open_notes():
             elif command == 'add-tag':
                 name, tag = args
                 helper.add_tag_to_note(name, tag)
+
+            elif command == 'find-notates-by-tag':
+                check_args_length(args)
+
+                tag = args[0]
+                notes = helper.find_notates_by_tag(tag)
+
+                print('____________________________\n')
+                for note in notes:
+                    print(note)
+                print('____________________________\n')
 
             else:
                 print("\n\nChoose a command from the list below:\n")
