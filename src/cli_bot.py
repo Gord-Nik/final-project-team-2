@@ -48,10 +48,12 @@ def main():
             print(helper.add_birthday(args))
         elif command == "show-birthday":
             print(helper.show_birthday(args))
-        elif command == "all":
-            print(helper.all())
+        elif command == "change-birthday":
+            print(helper.change_birthday(args))
         elif command == "birthdays":
             print(helper.birthdays(args))
+        elif command == "all":
+            print(helper.all())
         elif command == "open-notes":
             src.notes_bot.open_notes()
         elif command == "close":
