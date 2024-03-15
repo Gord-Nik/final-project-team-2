@@ -10,7 +10,16 @@ my_notes = Notes("my_notes")
 def open_notes():
 
     helper = NoteHelper(my_notes)
-    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note', 'all-notes', 'close', 'exit', 'finish', 'done', 'add-tag']
+    command_list = ['make-note',
+                    'open-note',
+                    'edit-note',
+                    'delete-note',
+                    'all-notes',
+                    'close',
+                    'exit',
+                    'finish',
+                    'done',
+                    'add-tag']
     session = PromptSession()
     while True:
         combined_list = command_list + list(my_notes.keys())
@@ -22,6 +31,7 @@ def open_notes():
             
             if command in ['close', 'exit', 'finish', 'done']:
                 print('Exiting Notes...\nAssistant listening...')
+                my_notes.exit()
                 break
 
             elif command == 'make-note':
@@ -86,12 +96,12 @@ def open_notes():
 
             else:
                 print("\n\nChoose a command from the list below:\n")
-                print("{:<15} + {:^20} -- {:<25}".format('make-note', '~', 'create a new note'))
-                print("{:<15} + {:^20} -- {:<25}".format('open-note', '<note name>', 'open a note by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('edit-note', '<note name>', 'edit a note by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('all-notes', '~', 'check all the notes by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('add-tag', '<note name>, <note tag>', 'add tag to the node\n\n'))
+                print("{:<15} + {:^25} -- {:<25}".format('make-note', '~', 'create a new note'))
+                print("{:<15} + {:^25} -- {:<25}".format('open-note', '<note name>', 'open a note by name'))
+                print("{:<15} + {:^25} -- {:<25}".format('edit-note', '<note name>', 'edit a note by name'))
+                print("{:<15} + {:^25} -- {:<25}".format('all-notes', '~', 'check all the notes by name'))
+                print("{:<15} + {:^25} -- {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
+                print("{:<15} + {:^25} -- {:<25}".format('add-tag', '<note name>, <note tag>', 'add tag to the note\n\n'))
         except ValueError:
             print('You need to type something.')
     return my_notes

@@ -7,7 +7,7 @@ import src.notes_bot
 
 
 def main():
-    command_list = ['hello', 'add', 'remove', 'change', 'phone', 'remove-phone', "add-birthday", "show-birthday", "all", "birthdays", "open-notes", 'close', 'exit']
+    command_list = ['hello', 'add', "add-address", "show-address", "change-address", "add-email", "change-email", 'remove', 'change', 'phone', 'remove-phone', "add-birthday", "show-birthday", "all", "birthdays", "open-notes", 'close']
     session = PromptSession()
     completer = WordCompleter(command_list)
     helper = Bot_Util(AddressBook())
