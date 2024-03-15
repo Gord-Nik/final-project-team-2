@@ -351,6 +351,15 @@ class Notes(UserDict):
         with open(self.__path, "rb") as file:
             return pickle.load(file)
 
+    def update(self, other):
+        if isinstance(other, dict):
+            for key, value in other.items():
+                self[key] = value
+        else:
+            for key, value in other:
+                self[key] = value
+        return self
+
     def __str__(self):
         return f'{self.name}'
 
