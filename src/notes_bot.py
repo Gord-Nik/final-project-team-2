@@ -15,8 +15,17 @@ def check_args_length(args):
 def open_notes():
 
     helper = NoteHelper(my_notes)
-    command_list = ['make-note', 'open-note', 'edit-note', 'delete-note'
-        , 'all-notes', 'close', 'exit', 'finish', 'done', 'add-tag', 'find-notates-by-tag']
+    command_list = ['make-note',
+                    'open-note'
+                    'edit-note',
+                    'delete-note',
+                    'all-notes',
+                    'close',
+                    'exit',
+                    'finish',
+                    'done',
+                    'add-tag',
+                    'find-notates-by-tag']
     session = PromptSession()
     while True:
         combined_list = command_list + list(my_notes.keys())
@@ -25,7 +34,7 @@ def open_notes():
             user_input = session.prompt("What is your Notes command? >>> ", completer=completer)
             command, *args = user_input.split()
             command = command.strip().lower()
-            
+
             if command in ['close', 'exit', 'finish', 'done']:
                 print('Exiting Notes...\nAssistant listening...')
                 break
@@ -42,10 +51,10 @@ def open_notes():
                     if note_name in my_notes:
                         print(f'Opening note: {note_name}\n')
 
-                        print(f'_________________{note_name}_________________\n')
+                        print(f'_______________{note_name}_______________\n')
                         for line in my_notes[note_name].text:
                             print(line)
-                        print(f'\n_________________{note_name}_________________\n')
+                        print(f'\n_______________{note_name}_______________\n')
 
                         print("tags:")
                         for line in my_notes[note_name].tags:
@@ -62,10 +71,10 @@ def open_notes():
                     note_name = args[0]
                     if note_name in my_notes:
                         print(f'Opening note to edit: {note_name}\n')
-                        print(f'_________________{note_name}_________________\n')
+                        print(f'________________{note_name}________________\n')
                         for line in my_notes[note_name].text:
                             print(line)
-                        print(f'_________________{note_name}_________________\n')
+                        print(f'________________{note_name}________________\n')
                         new_note = helper.edit_note(note_name)
                         my_notes[note_name].text = new_note
                 except:
@@ -109,12 +118,33 @@ def open_notes():
 
             else:
                 print("\n\nChoose a command from the list below:\n")
-                print("{:<15} + {:^20} -- {:<25}".format('make-note', '~', 'create a new note'))
-                print("{:<15} + {:^20} -- {:<25}".format('open-note', '<note name>', 'open a note by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('edit-note', '<note name>', 'edit a note by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('all-notes', '~', 'check all the notes by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('delete-note', '<note name>', 'delete a note by name'))
-                print("{:<15} + {:^20} -- {:<25}".format('add-tag', '<note name>, <note tag>', 'add tag to the node\n\n'))
+
+                print("{:<15} + {:^20} -- {:<25}"
+                      .format('make-note', '~', 'create a new note'))
+
+                print("{:<15} + {:^20} -- {:<25}"
+                      .format('open-note',
+                              '<note name>',
+                              'open a note by name'))
+
+                print("{:<15} + {:^20} -- {:<25}"
+                      .format('edit-note',
+                              '<note name>',
+                              'edit a note by name'))
+
+                print("{:<15} + {:^20} -- {:<25}"
+                      .format('all-notes', '~', 'check all the notes by name'))
+
+                print("{:<15} + {:^20} -- {:<25}"
+                      .format('delete-note',
+                              '<note name>',
+                              'delete a note by name'))
+
+                print("{:<15} + {:^20} -- {:<25}"
+                      .format('add-tag',
+                              '<note name>,'
+                              ' <note tag>',
+                              'add tag to the node\n\n'))
         except ValueError:
             print('You need to type something.')
     return my_notes
