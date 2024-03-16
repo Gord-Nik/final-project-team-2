@@ -9,6 +9,6 @@ setup(
     author_email='ua.gord.nik@gmail.com',
     license='MIT',
     packages=find_namespace_packages(),
-    install_requires=['docutils'],
+    install_requires=['docutils', 'prompt_toolkit'],
     entry_points={'console_scripts': ['bot_assistant = src.cli_bot:main']}
 )
