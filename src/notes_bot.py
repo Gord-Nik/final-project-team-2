@@ -31,14 +31,14 @@ def open_notes():
         combined_list = command_list + list(my_notes.keys())
         completer = WordCompleter(combined_list)
         try:
-            user_input = session.prompt("What is your Notes command? >>> ", completer=completer)
+            user_input = session.prompt("What is your Notes command? >>> ",
+                                        completer=completer)
             command, *args = user_input.split()
             command = command.strip().lower()
 
             if command in ['close', 'exit', 'finish', 'done']:
                 print('Exiting Notes...\nAssistant listening...')
                 my_notes.exit()
-                
                 break
 
             elif command == 'make-note':

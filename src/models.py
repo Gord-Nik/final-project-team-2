@@ -339,6 +339,7 @@ class Note:
 class Notes(UserDict):
     __file_name = "notes.bin"
     __path = os.path.join(os.getcwd(), __file_name)
+
     def __init__(self, name):
         super().__init__()
         self.name = name
