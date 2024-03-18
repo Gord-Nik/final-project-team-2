@@ -24,7 +24,7 @@ def main():
     session = PromptSession()
     completer = WordCompleter(command_list)
     helper = BotUtil(AddressBook())
-    print("Welcome to the assistant bot!")
+    print("Welcome to the assistant bot! Type \"help\" for guide")
     while True:
         user_input = session.prompt("Enter a command: ", completer=completer)
         command, *args = helper.parse_input(user_input)
@@ -67,6 +67,8 @@ def main():
             print(helper.birthdays(args))
         elif command == "all":
             print(helper.all())
+        elif command == "help":
+            helper.get_guide()
         elif command == "open-notes":
             src.notes_bot.open_notes()
         elif command == "close":

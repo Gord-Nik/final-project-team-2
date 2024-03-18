@@ -135,5 +135,25 @@ class BotUtil:
     def all(self):
         return self.addressBook
 
+    def get_guide(self):
+        print("""\nChoose a command from the list below:\n
+        add            + <name>, <phone>    -- add a new contact
+        add-address    + <name>, <address>  -- add an address to an existing contact
+        show-address   + <name>             -- show a contact`s address
+        change-address + <name>, <new address> -- add a new address to contact
+        add-email      + <name>, <email>    -- add an email to contact
+        show-email     + <name>, <email>    -- show a contact`s email
+        change-email   + <name>, <email>    -- change a contact`s email
+        remove         + <name>, <email>    -- remove the contact
+        change         + <name>, <phone>    -- change a contact`s phone
+        phone          + <name>             -- show contact`s phone
+        remove-phone   + <name>             -- remove the contact`s phone
+        add-birthday   + <name>, <birthday> -- add a birthday to contact
+        show-birthday  + <name>             -- show contact`s birthday
+        change-birthday+ <name>, <birthday> -- add a new birthday to contact
+        birthdays      + <count of days>    -- show near birthdays
+        all            + ~                   -- show all contacts
+        open-notes     + ~                   -- open notes menu\n""")
+
     def exit(self):
         self.addressBook.exit()

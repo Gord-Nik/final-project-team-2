@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name='final-project',
-    version='1',
+    version='1.2',
     description='Final project team 2',
     url='https://github.com/Gord-Nik/final-project-team-2',
     author='Nikita Hordiienko, Nataliya Traxler, Roman Koreshniak, Yevhenii Stakhovskyi ',
