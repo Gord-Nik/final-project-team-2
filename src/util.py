@@ -138,7 +138,7 @@ class BotUtil:
     def get_guide(self):
         print("""\nChoose a command from the list below:\n
         add            + <name>, <phone>    -- add a new contact
-        add-address    + <name>, <address>  -- add an address to an existing contact
+        add-address    + <name>, <address>  -- add an address to contact
         show-address   + <name>             -- show a contact`s address
         change-address + <name>, <new address> -- add a new address to contact
         add-email      + <name>, <email>    -- add an email to contact
