@@ -2,7 +2,6 @@ from docutils import DataError
 from src.models import AddressBook, Record
 
 
-
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -20,7 +19,8 @@ def input_error(func):
 
     return inner
 
-class Bot_Util:
+
+class BotUtil:
     def __init__(self, addressBook: AddressBook):
         self.addressBook = addressBook
 
@@ -59,14 +59,14 @@ class Bot_Util:
         phone = ''.join(phone)
         new_phone = ''.join(new_phone)
         return self.addressBook.edit_phone(name, phone, new_phone)
-    
+
     @input_error
     def remove_phone(self, args):
         name, phone = args
         name = ''.join(name)
         phone = ''.join(phone)
         return self.addressBook.remove_phone(name, phone)
-    
+
     # CUD e-mail
     @input_error
     def add_email(self, args):
@@ -87,55 +87,73 @@ class Bot_Util:
         name = args
         name = ''.join(name)
         return self.addressBook.show_email(name)
-    
+
     @input_error
     def add_address(self, args):
         name, address = args
         name = ''.join(name)
         address = ''.join(address)
         return self.addressBook.add_address(name, address)
-    
+
     @input_error
     def change_address(self, args):
         name, address = args
         name = ''.join(name)
         address = ''.join(address)
         return self.addressBook.edit_address(name, address)
-    
+
     @input_error
     def show_address(self, args):
         name = args
         name = ''.join(name)
         return self.addressBook.show_address(name)
-    
+
     @input_error
     def add_birthday(self, args):
         name, birthday = args
         name = ''.join(name)
         birthday = ''.join(birthday)
         return self.addressBook.add_birthday(name, birthday)
-    
+
     @input_error
     def change_birthday(self, args):
         name, birthday = args
         name = ''.join(name)
         birthday = ''.join(birthday)
         return self.addressBook.edit_birthday(name, birthday)
-    
+
     @input_error
     def show_birthday(self, args):
         name = args
         name = ''.join(name)
         return self.addressBook.show_birthday(name)
-    
+
     def birthdays(self, args):
         count_of_days = int(args[0])
         return self.addressBook.get_birthdays_by_count_of_days(count_of_days)
-    
+
     def all(self):
         return self.addressBook
 
+    def get_guide(self):
+        print("""\nChoose a command from the list below:\n
+        add            + <name>, <phone>    -- add a new contact
+        add-address    + <name>, <address>  -- add an address to contact
+        show-address   + <name>             -- show a contact`s address
+        change-address + <name>, <new address> -- add a new address to contact
+        add-email      + <name>, <email>    -- add an email to contact
+        show-email     + <name>, <email>    -- show a contact`s email
+        change-email   + <name>, <email>    -- change a contact`s email
+        remove         + <name>, <email>    -- remove the contact
+        change         + <name>, <phone>    -- change a contact`s phone
+        phone          + <name>             -- show contact`s phone
+        remove-phone   + <name>             -- remove the contact`s phone
+        add-birthday   + <name>, <birthday> -- add a birthday to contact
+        show-birthday  + <name>             -- show contact`s birthday
+        change-birthday+ <name>, <birthday> -- add a new birthday to contact
+        birthdays      + <count of days>    -- show near birthdays
+        all            + ~                   -- show all contacts
+        open-notes     + ~                   -- open notes menu\n""")
+
     def exit(self):
         self.addressBook.exit()
-
-

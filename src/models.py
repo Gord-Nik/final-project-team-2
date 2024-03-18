@@ -14,6 +14,7 @@ class Field:
     def __str__(self):
         return str(self.value)
 
+
 class Name(Field):
     def __init__(self, name):
         super().__init__(name)
@@ -23,6 +24,7 @@ class Name(Field):
 
     def __eq__(self, other):
         return self.value == other.value
+
 
 class Phone(Field):
     __pattern = r'^\d{10}$'
@@ -38,6 +40,7 @@ class Phone(Field):
     def __eq__(self, other):
         return self.value == other.value
 
+
 class Email(Field):
     __pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 
@@ -46,12 +49,15 @@ class Email(Field):
             raise ValueError("Invalid email format")
         super().__init__(email)
 
+
 class Address(Field):
     def __init__(self, address):
         super().__init__(address)
 
+
 class Birthday(Field):
     __date_format = "%d.%m.%Y"
+
     def __init__(self, birthday):
         try:
             value = datetime.datetime.strptime(birthday, self.__date_format)
@@ -61,6 +67,7 @@ class Birthday(Field):
 
     def __str__(self):
         return f"{self.value.strftime(self.__date_format)}"
+
 
 class Record:
     def __init__(self, name):
@@ -74,7 +81,7 @@ class Record:
         phn = Phone(phone)
         self.phones.append(phn)
         return "Phone was added."
-    
+
     def edit_phone(self, phone, new_phone):
         phn = Phone(phone)
         if self.__phone_exists(phn):
@@ -118,10 +125,10 @@ class Record:
     def edit_address(self, address):
         self.address = Address(address)
         return "Address was edited."
-    
+
     def show_address(self):
         return self.address
-    
+
     def add_birthday(self, birthday):
         if self.birthday:
             raise ValueError
@@ -134,25 +141,27 @@ class Record:
 
     def show_birthday(self):
         return self.birthday
-    
+
     def __phone_exists(self, phone):
         return phone in self.phones
-    
+
     def __str__(self):
         brth = ""
         if self.birthday is not None:
             brth += f" birthday: {self.birthday},"
-        
+
         mail = ""
         if self.email is not None:
             mail += f" e-mail: {self.email},"
-        
+
         addr = ""
         if self.address is not None:
             addr += f" address: {self.address}."
 
         return (f"Contact name: {self.name.value},"
-                f" phones: {'; '.join(p.value for p in self.phones)},{brth}{mail}{addr}")
+                f" phones: {'; '.join(p.value for p in self.phones)}"
+                f",{brth}{mail}{addr}")
+
 
 class AddressBook(UserDict):
     __file_name = "data.bin"
@@ -162,7 +171,7 @@ class AddressBook(UserDict):
         UserDict.__init__(self)
         if os.path.isfile(self.__path):
             self.data = self.__read_from_file()
-    
+
     def __save_to_file(self):
         with open(self.__path, "wb") as file:
             pickle.dump(self.data, file)
@@ -170,7 +179,7 @@ class AddressBook(UserDict):
     def __read_from_file(self):
         with open(self.__path, "rb") as file:
             return pickle.load(file)
-    
+
     def add_record(self, data):
         if data in self.data.values():
             raise ValueError
@@ -210,19 +219,19 @@ class AddressBook(UserDict):
             self.data.pop(nm)
             return "Record was removed."
         raise KeyError
-    
+
     def add_email(self, name, email):
         nm = Name(name)
         if self.__has_key(nm):
             return self.data[nm].add_email(email)
         raise KeyError
-    
+
     def edit_email(self, name, email):
         nm = Name(name)
         if self.__has_key(nm):
             return self.data[nm].edit_email(email)
         raise KeyError
-    
+
     def show_email(self, name):
         nm = Name(name)
         if self.__has_key(nm):
@@ -234,13 +243,13 @@ class AddressBook(UserDict):
         if self.__has_key(nm):
             return self.data[nm].add_address(address)
         raise KeyError
-    
+
     def edit_address(self, name, address):
         nm = Name(name)
         if self.__has_key(nm):
             return self.data[nm].edit_address(address)
         raise KeyError
-    
+
     def show_address(self, name):
         nm = Name(name)
         if self.__has_key(nm):
@@ -252,7 +261,7 @@ class AddressBook(UserDict):
         if self.__has_key(nm):
             return self.data[nm].add_birthday(birthday)
         raise KeyError
-    
+
     def edit_birthday(self, name, birthday):
         nm = Name(name)
         if self.__has_key(nm):
@@ -327,10 +336,10 @@ class Note:
             self.tags.append(tag)
 
 
-
 class Notes(UserDict):
     __file_name = "notes.bin"
     __path = os.path.join(os.getcwd(), __file_name)
+
     def __init__(self, name):
         super().__init__()
         self.name = name
@@ -373,12 +382,13 @@ class NoteHelper:
         if named_note == '':
             return 'Name your note.'
         else:
-            print(f"\n<{named_note}> created!\nYou can type now.\n(When finished, type 'close' in a new line):\n")
+            print(f"\n<{named_note}> created!\nYou can type now."
+                  f"\n(When finished, type 'close' in a new line):\n")
             lines = []
             while True:
                 line = input()
                 if line in ['close', 'exit', 'finish', 'done', 'save']:
-                     break
+                    break
                 lines.append(line)
         print(f'\n({named_note}) - saved!\n')
 
@@ -386,7 +396,8 @@ class NoteHelper:
         return {f'{named_note}': note}
 
     def edit_note(self, name):
-        print(f"<Editing <{name}>...\nYou can type now.\n(When finished, type 'close' in a new line):\n")
+        print(f"<Editing <{name}>...\nYou can type now."
+              f"\n(When finished, type 'close' in a new line):\n")
         lines = []
         while True:
             line = input()
@@ -395,11 +406,11 @@ class NoteHelper:
             lines.append(line)
         print(f'\n({name}) - saved!\n')
         return lines
-    
+
     def all_notes(self):
         for key in self.notes.keys():
             print(f'-  {key}')
-    
+
     def delete_note(self, name):
         confirmation = input('Do you want to delete? y/n ')
         if confirmation == 'y':
